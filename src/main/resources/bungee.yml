@@ -1,0 +1,8 @@
+name: PrivateServer
+version: "1.0"
+main: de.luuuuuis.privateserver.PrivateServerSystem
+author: Luuuuuis
+prefix: PrivateServer
+
+commands:
+  privateserver:

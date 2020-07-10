@@ -1,0 +1,13 @@
+{
+  "prefix": "§6PV §8» §7",
+  "messages": {
+    "startingServer": "Starting server of group %s...",
+    "noGroupSpecified": "§cNo group Specified!",
+    "startingTitle": "§6Starting server%s"
+  },
+  "template": "default",
+  "groups": [ "Lobby", "test" ],
+  "maxServersRunning": 2,
+  "maxServersPerUser": 10,
+  "memory": 256
+}
