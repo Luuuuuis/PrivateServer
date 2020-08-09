@@ -1,6 +1,6 @@
 name: PrivateServer
-version: "1.0"
-main: de.luuuuuis.privateserver.PrivateServerSystem
+version: "0.2-alpha"
+main: de.luuuuuis.privateserver.PrivateServer
 author: Luuuuuis
 prefix: PrivateServer
 

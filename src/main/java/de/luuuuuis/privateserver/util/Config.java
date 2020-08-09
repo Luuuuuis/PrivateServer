@@ -1,6 +1,6 @@
 package de.luuuuuis.privateserver.util;
 
-import de.luuuuuis.privateserver.PrivateServerSystem;
+import de.luuuuuis.privateserver.PrivateServer;
 
 import java.io.File;
 import java.io.FileReader;
@@ -43,25 +43,27 @@ public class Config {
 
             // create DataFolder
             if (!dataFolder.exists())
-                dataFolder.mkdir();
+                if (!dataFolder.mkdir()) {
+                    System.err.println("COULD NOT CREATE PLUGIN FOLDER. Please check permissions and/or try again.");
+                    return;
+                }
 
             // copy config
-            try (InputStream in = PrivateServerSystem.class.getClassLoader().getResourceAsStream("config.json")) {
+            try (InputStream in = PrivateServer.class.getClassLoader().getResourceAsStream("config.json")) {
                 Files.copy(Objects.requireNonNull(in), Paths.get(path));
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            read(path);
-        } else {
-            read(path);
         }
+
+        read(path);
 
     }
 
     private static void read(String path) {
         try (FileReader fileReader = new FileReader(path)) {
-            instance = PrivateServerSystem.GSON.fromJson(fileReader, Config.class);
+            instance = PrivateServer.GSON.fromJson(fileReader, Config.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

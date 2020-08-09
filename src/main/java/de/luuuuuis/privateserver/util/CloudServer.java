@@ -5,27 +5,28 @@ import de.dytanic.cloudnet.lib.server.ServerConfig;
 import de.dytanic.cloudnet.lib.server.template.Template;
 import de.dytanic.cloudnet.lib.server.template.TemplateResource;
 import de.dytanic.cloudnet.lib.utility.document.Document;
-import de.luuuuuis.privateserver.PrivateServerSystem;
+import de.luuuuuis.privateserver.PrivateServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
-public class PrivateServer {
+public class CloudServer {
 
-    private String name;
     private final String group, template;
     private final ProxiedPlayer owner;
+    private String name;
 
-    public PrivateServer(String group, String template, ProxiedPlayer owner) {
+    public CloudServer(String group, String template, ProxiedPlayer owner) {
         this.group = group;
         this.template = template;
         this.owner = owner;
 
         name = createName();
 
-        PrivateServerSystem.servers.add(this);
+        PrivateServer.servers.add(this);
     }
 
     public void start() {
@@ -50,11 +51,19 @@ public class PrivateServer {
         name = "PV-" + new Random().nextInt(1000);
 
         //check if already there
-        while(PrivateServerSystem.servers.stream().anyMatch(server -> server.name.equals(name))) {
+        while (PrivateServer.servers.stream().anyMatch(server -> server.name.equals(name))) {
             name = "PV-" + new Random().nextInt(1000);
         }
 
         return name;
+    }
+
+    public List<String> getPlayers() {
+        return CloudAPI.getInstance().getServerInfo(name).getPlayers();
+    }
+
+    public int getMaxPlayers() {
+        return CloudAPI.getInstance().getServerInfo(name).getMaxPlayers();
     }
 
     public String getName() {

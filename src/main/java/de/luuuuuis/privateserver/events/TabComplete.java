@@ -1,6 +1,6 @@
 package de.luuuuuis.privateserver.events;
 
-import de.luuuuuis.privateserver.PrivateServerSystem;
+import de.luuuuuis.privateserver.PrivateServer;
 import de.luuuuuis.privateserver.util.Config;
 import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -26,7 +26,7 @@ public class TabComplete implements Listener {
                     break;
                 case "stop":
                     List<String> servers = new ArrayList<>();
-                    PrivateServerSystem.servers.stream().filter(privateServer -> privateServer.getOwner().equals(e.getSender())).forEach(server -> servers.add(server.getName()));
+                    PrivateServer.servers.stream().filter(privateServer -> privateServer.getOwner().equals(e.getSender())).forEach(server -> servers.add(server.getName()));
                     e.getSuggestions().addAll(servers);
                     break;
             }

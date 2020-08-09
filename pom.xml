@@ -6,7 +6,7 @@
 
     <groupId>de.luuuuuis</groupId>
     <artifactId>PrivateServer</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.2-alpha</version>
 
 
     <build>
@@ -60,7 +60,6 @@
             <id>cloudnet</id>
             <url>https://cloudnetservice.eu/repositories/</url>
         </repository>
-
         <repository>
             <id>bungeecord-repo</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
@@ -89,7 +88,6 @@
             <type>javadoc</type>
             <scope>provided</scope>
         </dependency>
-
 
         <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
         <dependency>
