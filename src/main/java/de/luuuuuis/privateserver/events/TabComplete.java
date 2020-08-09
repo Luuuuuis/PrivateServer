@@ -26,7 +26,7 @@ public class TabComplete implements Listener {
                     break;
                 case "stop":
                     List<String> servers = new ArrayList<>();
-                    PrivateServer.servers.stream().filter(privateServer -> privateServer.getOwner().equals(e.getSender())).forEach(server -> servers.add(server.getName()));
+                    PrivateServer.servers.stream().filter(privateServer -> privateServer.getOwner().getPlayer().equals(e.getSender())).forEach(server -> servers.add(server.getName()));
                     e.getSuggestions().addAll(servers);
                     break;
             }

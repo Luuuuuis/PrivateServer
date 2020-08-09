@@ -2,13 +2,15 @@
   "prefix": "§6PV §8» §7",
   "messages": {
     "startingServer": "Starting server of group %s...",
-    "noGroupSpecified": "§cYou may start one of these groups: %s",
-    "startingTitle": "§6Starting server%s"
+    "noGroupSpecified": "§cYou may only start one of these groups: %s",
+    "startingTitle": "§6Starting server%s",
+    "noPerms": "§cYou got no permission to perform that action!"
   },
   "template": "default",
   "groups": [
     "Lobby",
-    "test"
+    "BW-8x1",
+    "SkyWars-4x2"
   ],
   "maxServersRunning": 10,
   "maxServersPerUser": 2,

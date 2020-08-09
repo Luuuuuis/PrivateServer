@@ -8,28 +8,26 @@ import de.dytanic.cloudnet.lib.utility.document.Document;
 import de.luuuuuis.privateserver.PrivateServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 public class CloudServer {
 
     private final String group, template;
-    private final ProxiedPlayer owner;
+    private final Owner owner;
     private String name;
 
-    public CloudServer(String group, String template, ProxiedPlayer owner) {
+    public CloudServer(String group, String template, ProxiedPlayer player) {
         this.group = group;
         this.template = template;
-        this.owner = owner;
+        this.owner = Owner.getOwner(player);
 
         name = createName();
-
-        PrivateServer.servers.add(this);
     }
 
     public void start() {
+        if (!isAllowed())
+            return;
+
         CloudAPI.getInstance().startGameServer(CloudAPI.getInstance().getServerGroupData(group),
                 new ServerConfig(true, "null", new Document("uniqueId", owner.getUniqueId()), System.currentTimeMillis()),
                 Config.getInstance().getMemory(),
@@ -41,10 +39,44 @@ public class CloudServer {
                 new Properties(),
                 null,
                 Collections.emptyList());
+
+        PrivateServer.servers.add(this);
+        owner.getServers().add(this);
+
+        owner.sendMessage(Config.getInstance().getPrefix() + String.format(Config.getInstance().getMessages().get("startingServer").toString(), group));
+        owner.sendTitle(this);
     }
 
     public void stop() {
+        owner.sendMessage(Config.getInstance().getPrefix() + "Stopping " + name + "...");
+
         CloudAPI.getInstance().stopServer(name);
+        PrivateServer.servers.remove(this);
+        owner.removeServer(this);
+    }
+
+    private boolean isAllowed() {
+        List<String> groups = Config.getInstance().getGroups();
+        if (CloudAPI.getInstance().getServerGroupData(group) == null || !groups.contains(group)) {
+            StringJoiner joiner = new StringJoiner(", ");
+            groups.forEach(joiner::add);
+
+            owner.sendMessage(Config.getInstance().getPrefix() + String.format(Config.getInstance().getMessages().get("noGroupSpecified").toString(), joiner));
+            return false;
+        }
+
+        if (PrivateServer.servers.size() >= Config.getInstance().getMaxServersRunning()) {
+            owner.sendMessage(Config.getInstance().getPrefix() + "§cThere are too many servers running! Please try again later.");
+            return false;
+        }
+
+        long serverOfUser = PrivateServer.servers.stream().filter(cloudServer -> cloudServer.getOwner().equals(owner)).count();
+        if (serverOfUser >= Config.getInstance().getMaxServersPerUser()) {
+            owner.sendMessage(Config.getInstance().getPrefix() + "§cYour server quota is exhausted! Stop a server before starting a new one.");
+            return false;
+        }
+
+        return true;
     }
 
     private String createName() {
@@ -78,7 +110,7 @@ public class CloudServer {
         return template;
     }
 
-    public ProxiedPlayer getOwner() {
+    public Owner getOwner() {
         return owner;
     }
 }

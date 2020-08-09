@@ -1,8 +1,12 @@
 name: PrivateServer
-version: "0.2-alpha"
+version: "0.3-alpha"
 main: de.luuuuuis.privateserver.PrivateServer
 author: Luuuuuis
-prefix: PrivateServer
+depends:
+  - CloudNetAPI
+description: Start private servers for cloudnet 2.0
+website: https://github.com/Luuuuuis/PrivateServer
 
 commands:
   privateserver:
+    description: main command to start/stop private servers

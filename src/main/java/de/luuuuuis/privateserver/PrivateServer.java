@@ -15,7 +15,6 @@ import java.util.List;
 public class PrivateServer extends Plugin {
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
     public static List<CloudServer> servers = new ArrayList<>();
 
     @Override
@@ -45,7 +44,9 @@ public class PrivateServer extends Plugin {
     public void onDisable() {
         super.onDisable();
 
-        // stop all private servers
+        /* stop all running private servers.
+         * Only works when the BungeeCord is stopped with /end
+         */
         servers.forEach(CloudServer::stop);
     }
 }
