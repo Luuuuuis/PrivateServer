@@ -43,7 +43,7 @@ public class Owner {
      * Only use this if you know there is an Owner
      *
      * @param player ProxiedPlayer provided by BungeeCord API
-     * @return the already existing owner
+     * @return the already existing owner or null
      */
     public static Owner getOwner(ProxiedPlayer player) {
         return owners.stream().filter(owner -> owner.getPlayer().equals(player)).findFirst().orElse(null);
@@ -92,7 +92,7 @@ public class Owner {
      * @param message a simple String
      */
     public void sendMessage(String message) {
-        player.sendMessage(new TextComponent(message));
+        player.sendMessage(TextComponent.fromLegacyText(message));
     }
 
     /**

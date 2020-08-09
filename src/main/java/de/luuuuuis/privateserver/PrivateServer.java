@@ -3,6 +3,7 @@ package de.luuuuuis.privateserver;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.luuuuuis.privateserver.commands.PrivateServerCmd;
+import de.luuuuuis.privateserver.events.ServerSwitch;
 import de.luuuuuis.privateserver.events.TabComplete;
 import de.luuuuuis.privateserver.util.CloudServer;
 import de.luuuuuis.privateserver.util.Config;
@@ -38,6 +39,7 @@ public class PrivateServer extends Plugin {
         PluginManager pluginManager = getProxy().getPluginManager();
         pluginManager.registerCommand(this, new PrivateServerCmd());
         pluginManager.registerListener(this, new TabComplete());
+        pluginManager.registerListener(this, new ServerSwitch());
     }
 
     @Override

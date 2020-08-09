@@ -24,13 +24,13 @@ public class PrivateServerCmd extends Command {
     @Override
     public void execute(CommandSender sender, String[] strings) {
         if (!(sender instanceof ProxiedPlayer)) {
-            sender.sendMessage(new TextComponent(Config.getInstance().getPrefix() + "§cYou have to be a player. :( noʎ ʃǝǝɟ"));
+            sender.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "§cYou have to be a player. :( noʎ ʃǝǝɟ"));
             return;
         }
 
         ProxiedPlayer p = (ProxiedPlayer) sender;
         if (!p.hasPermission("privateserver")) {
-            sender.sendMessage(new TextComponent(Config.getInstance().getPrefix() + Config.getInstance().getMessages().get("noPerms")));
+            sender.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + Config.getInstance().getMessages().get("noPerms")));
             return;
         }
 
@@ -38,7 +38,7 @@ public class PrivateServerCmd extends Command {
         PlayerExecutorBridge playerExecutorBridge = new PlayerExecutorBridge();
 
         if (strings.length == 0) {
-            p.sendMessage(new TextComponent(defaultMessage()));
+            p.sendMessage(TextComponent.fromLegacyText(defaultMessage()));
             return;
         }
 
@@ -48,7 +48,7 @@ public class PrivateServerCmd extends Command {
                     StringJoiner joiner = new StringJoiner(", ");
                     Config.getInstance().getGroups().forEach(joiner::add);
 
-                    p.sendMessage(new TextComponent(Config.getInstance().getPrefix() + String.format(Config.getInstance().getMessages().get("noGroupSpecified").toString(), joiner)));
+                    p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + String.format(Config.getInstance().getMessages().get("noGroupSpecified").toString(), joiner)));
                     return;
                 }
 
@@ -59,20 +59,20 @@ public class PrivateServerCmd extends Command {
                 cloudServer.start();
                 break;
             case "status":
-                p.sendMessage(new TextComponent(Config.getInstance().getPrefix() + "Private Servers: "));
+                p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "Private Servers: "));
                 if (p.hasPermission("privateserver.list")) {
                     PrivateServer.servers.forEach(server -> p.sendMessage(
-                            new TextComponent("  §8- [§c" + server.getName() + "§8/§c" + server.getGroup() + "§8] §7Owned by §a" + server.getOwner().getPlayer().getDisplayName()
+                            TextComponent.fromLegacyText("  §8- [§c" + server.getName() + "§8/§c" + server.getGroup() + "§8] §7Owned by §a" + server.getOwner().getPlayer().getDisplayName()
                                     + " §8(§7" + server.getPlayers().size() + "§8/§7" + server.getMaxPlayers() + "§8)")));
                 } else {
                     Owner owner = Owner.getOwner(p);
                     if (owner == null) {
-                        p.sendMessage(new TextComponent("   §cThere are currently no servers running."));
+                        p.sendMessage(TextComponent.fromLegacyText("   §cThere are currently no servers running."));
                         return;
                     }
 
                     owner.getServers().forEach(server -> p.sendMessage(
-                            new TextComponent("  §8- [§c" + server.getName() + "§8/§c" + server.getGroup() + "§8]"
+                            TextComponent.fromLegacyText("  §8- [§c" + server.getName() + "§8/§c" + server.getGroup() + "§8]"
                                     + " §8(§7" + server.getPlayers().size() + "§8/§7" + server.getMaxPlayers() + "§8)")));
 
                 }
@@ -81,7 +81,7 @@ public class PrivateServerCmd extends Command {
             case "stop":
                 Owner owner = Owner.getOwner(p);
                 if (owner == null) {
-                    p.sendMessage(new TextComponent(Config.getInstance().getPrefix() + "§cYou have currently no servers running."));
+                    p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "§cYou have currently no servers running."));
                     return;
                 }
 
@@ -92,7 +92,7 @@ public class PrivateServerCmd extends Command {
                     if (privateServers.stream().filter(privateServer -> privateServer.getName().equals(p.getServer().getInfo().getName())).findFirst().orElse(null) != null) {
                         server = p.getServer().getInfo().getName();
                     } else {
-                        p.sendMessage(new TextComponent(Config.getInstance().getPrefix() + "§cYou cannot stop this server."));
+                        p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "§cYou cannot stop this server."));
                         return;
                     }
                 } else {
@@ -103,12 +103,12 @@ public class PrivateServerCmd extends Command {
                 if (privateServer != null) {
                     privateServer.stop();
                 } else {
-                    p.sendMessage(new TextComponent(Config.getInstance().getPrefix() + "§cYou cannot stop that server."));
+                    p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "§cYou cannot stop that server."));
                 }
 
                 break;
             default:
-                sender.sendMessage(new TextComponent(defaultMessage()));
+                sender.sendMessage(TextComponent.fromLegacyText(defaultMessage()));
         }
 
     }

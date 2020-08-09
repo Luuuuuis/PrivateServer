@@ -71,7 +71,8 @@ public class CloudServer {
         }
 
         long serverOfUser = PrivateServer.servers.stream().filter(cloudServer -> cloudServer.getOwner().equals(owner)).count();
-        if (serverOfUser >= Config.getInstance().getMaxServersPerUser()) {
+        int maxServersPerUser = (owner.getPlayer().hasPermission("privateserver.premium") ? Config.getInstance().getMaxServersPerUser() : 1);
+        if (serverOfUser >= maxServersPerUser) {
             owner.sendMessage(Config.getInstance().getPrefix() + "§cYour server quota is exhausted! Stop a server before starting a new one.");
             return false;
         }
