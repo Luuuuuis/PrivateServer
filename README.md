@@ -29,4 +29,5 @@ This is a completely free and opensource private server system for CloudNet 2.0
 
 ### Bugs / Questions?
 Discord: https://discord.gg/2aSSGcz
+
 GitHub Issues: https://github.com/Luuuuuis/PrivateServer/issues
