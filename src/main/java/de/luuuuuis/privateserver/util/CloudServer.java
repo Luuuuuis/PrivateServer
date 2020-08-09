@@ -6,6 +6,8 @@ import de.dytanic.cloudnet.lib.server.template.Template;
 import de.dytanic.cloudnet.lib.server.template.TemplateResource;
 import de.dytanic.cloudnet.lib.utility.document.Document;
 import de.luuuuuis.privateserver.PrivateServer;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.*;
@@ -53,6 +55,11 @@ public class CloudServer {
         CloudAPI.getInstance().stopServer(name);
         PrivateServer.servers.remove(this);
         owner.removeServer(this);
+
+        getPlayers().forEach(player -> {
+            ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
+            proxiedPlayer.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "The server you were on was shutdown. You were moved to the fallback server."));
+        });
     }
 
     private boolean isAllowed() {
