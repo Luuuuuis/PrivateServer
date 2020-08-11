@@ -6,9 +6,10 @@ This is a completely free and opensource private server system for CloudNet 2.0
 ### Commands:
 + /privateserver start [GROUP]
 + /privateserver status
++ /privateserver invite [PLAYER] (invite multiple players at once)
 + /privateserver stop [SERVER] 
 
-![Commands](https://i.ibb.co/xjfCshS/c1t-TE-Oa-Q4-Wf17a-GBHcctw.png "Commands")
+![Commands](https://i.ibb.co/SNBKw1M/image.png "Commands")
 
 ### Permissions:
 + privateserver To start/stop servers
@@ -24,10 +25,13 @@ This is a completely free and opensource private server system for CloudNet 2.0
 
 ![Private server status with permission privateserver.list](https://i.ibb.co/m9DXTWc/image.png "List of private servers")
 
++ Invite your friends on your own server
+
+![Invitation receiver](https://i.ibb.co/VtmQBtg/image.png "invitation")
+
 + Messages are editable in the config
 + Frequent updates
 
 ### Bugs / Questions?
-Discord: https://discord.gg/2aSSGcz
-
+Discord: https://discord.gg/2aSSGcz  
 GitHub Issues: https://github.com/Luuuuuis/PrivateServer/issues
