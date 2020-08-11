@@ -131,10 +131,6 @@ public class CloudServer {
         return group;
     }
 
-    public String getTemplate() {
-        return template;
-    }
-
     public Owner getOwner() {
         return owner;
     }

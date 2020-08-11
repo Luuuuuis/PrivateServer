@@ -5,7 +5,6 @@ import de.dytanic.cloudnet.api.player.PlayerExecutorBridge;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class Owner {
      *
      * @param cloudServer the CloudServer you want to send the player
      */
-    public void sendTitle(@NotNull CloudServer cloudServer) {
+    public void sendTitle(CloudServer cloudServer) {
         Thread th = new Thread(() -> {
             //send title & to server
             int i = 0;
@@ -82,7 +81,7 @@ public class Owner {
         th.start();
     }
 
-    private void sendPlayer(@NotNull CloudServer cloudServer) {
+    private void sendPlayer(CloudServer cloudServer) {
         playerExecutorBridge.sendPlayer(cloudPlayer, cloudServer.getName());
     }
 
