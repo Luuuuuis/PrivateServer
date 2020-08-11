@@ -32,6 +32,21 @@ This is a completely free and opensource private server system for CloudNet 2.0
 + Messages are editable in the config
 + Frequent updates
 
+### Config:
++ Prefix editable
++ Messages editable
++ CloudNET template editable in config
++ Startable groups
++ Max servers running on the whole server
++ Max servers per user
++ Momory editable
+
+### Installation:
+1. Download the .jar
+2. Drag the .jar files into your plugin folder
+3. Restart your BungeeCord server
+4. Optional: Edit config.json and restart again
+
 ### Bugs / Questions?
 Discord: https://discord.gg/2aSSGcz  
 GitHub Issues: https://github.com/Luuuuuis/PrivateServer/issues
