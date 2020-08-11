@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class Owner {
 
-    private static final List<Owner> owners = new ArrayList<>();
+    private final static List<Owner> owners = new ArrayList<>();
     private final List<CloudServer> servers = new ArrayList<>();
     private final ProxiedPlayer player;
     private final PlayerExecutorBridge playerExecutorBridge;
@@ -87,7 +87,7 @@ public class Owner {
     }
 
     /**
-     * Just a method to override the sendMessage method of ProxiedPlayer.
+     * Just a better method to send a messages to the  ProxiedPlayer.
      *
      * @param message a simple String
      */

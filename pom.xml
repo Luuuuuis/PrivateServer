@@ -6,8 +6,7 @@
 
     <groupId>de.luuuuuis</groupId>
     <artifactId>PrivateServer</artifactId>
-    <version>0.3.1</version>
-
+    <version>0.4</version>
 
     <build>
         <plugins>
@@ -95,7 +94,6 @@
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.jetbrains</groupId>

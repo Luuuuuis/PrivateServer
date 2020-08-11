@@ -1,16 +1,11 @@
 package de.luuuuuis.privateserver.events;
 
-import de.luuuuuis.privateserver.util.CloudServer;
 import de.luuuuuis.privateserver.util.Config;
 import de.luuuuuis.privateserver.util.Owner;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ServerSwitch implements Listener {
 
@@ -30,15 +25,4 @@ public class ServerSwitch implements Listener {
         });
     }
 
-    @EventHandler
-    public void onPlayerDisconnect(PlayerDisconnectEvent e) {
-        ProxiedPlayer p = e.getPlayer();
-        Owner owner = Owner.getOwner(p);
-        if (owner == null)
-            return;
-
-        //Avoiding ConcurrentModificationException
-        List<CloudServer> toStop = new ArrayList<>(owner.getServers());
-        toStop.forEach(CloudServer::stop);
-    }
 }

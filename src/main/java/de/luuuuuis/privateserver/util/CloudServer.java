@@ -5,15 +5,16 @@ import de.dytanic.cloudnet.lib.server.ServerConfig;
 import de.dytanic.cloudnet.lib.server.template.Template;
 import de.dytanic.cloudnet.lib.server.template.TemplateResource;
 import de.dytanic.cloudnet.lib.utility.document.Document;
-import de.luuuuuis.privateserver.PrivateServer;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CloudServer {
 
+    private final static List<CloudServer> cloudServers = new ArrayList<>();
     private final String group, template;
     private final Owner owner;
     private String name;
@@ -24,6 +25,14 @@ public class CloudServer {
         this.owner = Owner.getOwner(player);
 
         name = createName();
+    }
+
+    public static CloudServer getCloudServer(String serverName) {
+        return cloudServers.stream().filter(cloudServer -> cloudServer.getName().equals(serverName)).findFirst().orElse(null);
+    }
+
+    public static List<CloudServer> getCloudServers() {
+        return cloudServers;
     }
 
     public void start() {
@@ -42,7 +51,7 @@ public class CloudServer {
                 null,
                 Collections.emptyList());
 
-        PrivateServer.servers.add(this);
+        cloudServers.add(this);
         owner.getServers().add(this);
 
         owner.sendMessage(Config.getInstance().getPrefix() + String.format(Config.getInstance().getMessages().get("startingServer").toString(), group));
@@ -52,14 +61,22 @@ public class CloudServer {
     public void stop() {
         owner.sendMessage(Config.getInstance().getPrefix() + "Stopping " + name + "...");
 
+        // remove from Invitee list
+        Invitee.getInvitees().stream()
+                .filter(invitee -> invitee.getOwner().equals(owner))
+                .collect(Collectors.toList())
+                .forEach(Invitee::revoke);
+
         CloudAPI.getInstance().stopServer(name);
-        PrivateServer.servers.remove(this);
+        cloudServers.remove(this);
         owner.removeServer(this);
 
         getPlayers().forEach(player -> {
             ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
             proxiedPlayer.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "The server you were on was shutdown. You were moved to the fallback server."));
         });
+
+
     }
 
     private boolean isAllowed() {
@@ -72,12 +89,12 @@ public class CloudServer {
             return false;
         }
 
-        if (PrivateServer.servers.size() >= Config.getInstance().getMaxServersRunning()) {
+        if (cloudServers.size() >= Config.getInstance().getMaxServersRunning()) {
             owner.sendMessage(Config.getInstance().getPrefix() + "§cThere are too many servers running! Please try again later.");
             return false;
         }
 
-        long serverOfUser = PrivateServer.servers.stream().filter(cloudServer -> cloudServer.getOwner().equals(owner)).count();
+        long serverOfUser = cloudServers.stream().filter(cloudServer -> cloudServer.getOwner().equals(owner)).count();
         int maxServersPerUser = (owner.getPlayer().hasPermission("privateserver.premium") ? Config.getInstance().getMaxServersPerUser() : 1);
         if (serverOfUser >= maxServersPerUser) {
             owner.sendMessage(Config.getInstance().getPrefix() + "§cYour server quota is exhausted! Stop a server before starting a new one.");
@@ -91,7 +108,7 @@ public class CloudServer {
         name = "PV-" + new Random().nextInt(1000);
 
         //check if already there
-        while (PrivateServer.servers.stream().anyMatch(server -> server.name.equals(name))) {
+        while (cloudServers.stream().anyMatch(server -> server.name.equals(name))) {
             name = "PV-" + new Random().nextInt(1000);
         }
 

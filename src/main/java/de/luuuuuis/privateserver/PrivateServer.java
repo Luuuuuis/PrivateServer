@@ -3,6 +3,7 @@ package de.luuuuuis.privateserver;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.luuuuuis.privateserver.commands.PrivateServerCmd;
+import de.luuuuuis.privateserver.events.DisconnectListener;
 import de.luuuuuis.privateserver.events.ServerSwitch;
 import de.luuuuuis.privateserver.events.TabComplete;
 import de.luuuuuis.privateserver.util.CloudServer;
@@ -10,13 +11,9 @@ import de.luuuuuis.privateserver.util.Config;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PrivateServer extends Plugin {
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static List<CloudServer> servers = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -40,6 +37,7 @@ public class PrivateServer extends Plugin {
         pluginManager.registerCommand(this, new PrivateServerCmd());
         pluginManager.registerListener(this, new TabComplete());
         pluginManager.registerListener(this, new ServerSwitch());
+        pluginManager.registerListener(this, new DisconnectListener());
     }
 
     @Override
@@ -47,8 +45,9 @@ public class PrivateServer extends Plugin {
         super.onDisable();
 
         /* stop all running private servers.
-         * Only works when the BungeeCord is stopped with /end
+         * Sometimes only works when the BungeeCord is stopped with /end
+         * kinda weird of cloudnet idk
          */
-        servers.forEach(CloudServer::stop);
+        CloudServer.getCloudServers().forEach(CloudServer::stop);
     }
 }
