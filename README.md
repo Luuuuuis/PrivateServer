@@ -1,7 +1,7 @@
 # PrivateServer
-Private server system for CloudNet 2.0
+Free & open-source private server system for CloudNET 2
 
-This is a completely free and opensource private server system for CloudNet 2.0
+Create your own private game servers and invite your friends to play with you. Only with you.
 
 ### Commands:
 + /privateserver start [GROUP]
