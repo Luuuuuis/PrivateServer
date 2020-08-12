@@ -37,9 +37,6 @@ public class PrivateServerCmd extends Command {
             return;
         }
 
-        CloudPlayer cloudPlayer = CloudAPI.getInstance().getOnlinePlayer(p.getUniqueId());
-        PlayerExecutorBridge playerExecutorBridge = new PlayerExecutorBridge();
-
         if (strings.length == 0) {
             p.sendMessage(TextComponent.fromLegacyText(defaultMessage()));
             return;
@@ -57,11 +54,15 @@ public class PrivateServerCmd extends Command {
                     return;
                 }
 
-                //create owner object
-                Owner.getOwner(p, playerExecutorBridge, cloudPlayer);
+                CloudPlayer cloudPlayer = CloudAPI.getInstance().getOnlinePlayer(p.getUniqueId());
+                PlayerExecutorBridge playerExecutorBridge = new PlayerExecutorBridge();
 
-                CloudServer cloudServer = new CloudServer(strings[1], Config.getInstance().getTemplate(), p);
-                cloudServer.start();
+                //create owner object
+                if (owner == null) {
+                    new Owner(p, playerExecutorBridge, cloudPlayer);
+                }
+
+                new CloudServer(strings[1], Config.getInstance().getTemplate(), p).start();
                 break;
             case "status":
                 p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "Private Servers: "));

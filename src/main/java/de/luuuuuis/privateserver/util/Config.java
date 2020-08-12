@@ -16,7 +16,6 @@ public class Config {
 
     private static Config instance;
 
-
     private final String prefix, template;
     private final HashMap<String, Object> messages;
     private final ArrayList<String> groups;
@@ -37,9 +36,8 @@ public class Config {
     }
 
     public synchronized static void init(File dataFolder) {
-
-        String path = dataFolder.getPath() + "/config.json";
-        if (Files.notExists(Paths.get(path))) {
+        String config = dataFolder.getPath() + "/config.json";
+        if (Files.notExists(Paths.get(config))) {
 
             // create DataFolder
             if (!dataFolder.exists())
@@ -50,15 +48,14 @@ public class Config {
 
             // copy config
             try (InputStream in = PrivateServer.class.getClassLoader().getResourceAsStream("config.json")) {
-                Files.copy(Objects.requireNonNull(in), Paths.get(path));
+                Files.copy(Objects.requireNonNull(in), Paths.get(config));
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }
 
-        read(path);
-
+        read(config);
     }
 
     private static void read(String path) {

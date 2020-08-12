@@ -6,7 +6,7 @@
 
     <groupId>de.luuuuuis</groupId>
     <artifactId>PrivateServer</artifactId>
-    <version>0.4</version>
+    <version>0.5</version>
 
     <build>
         <plugins>
@@ -56,11 +56,11 @@
 
     <repositories>
         <repository>
-            <id>cloudnet</id>
+            <id>CloudNET</id>
             <url>https://cloudnetservice.eu/repositories/</url>
         </repository>
         <repository>
-            <id>bungeecord-repo</id>
+            <id>BungeeCord-repo</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
     </repositories>

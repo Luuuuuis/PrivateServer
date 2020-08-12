@@ -3,7 +3,9 @@ package de.luuuuuis.privateserver.util;
 import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.api.player.PlayerExecutorBridge;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -24,18 +26,6 @@ public class Owner {
         this.cloudPlayer = cloudPlayer;
 
         owners.add(this);
-    }
-
-    /**
-     * Use this to create the owner if not he doesn't exist
-     *
-     * @param player               ProxiedPlayer provided by BungeeCord API
-     * @param playerExecutorBridge provided by CloudNetAPI
-     * @param cloudPlayer          provided by CloudNetAPI
-     * @return either an already existing Owner or a new one.
-     */
-    public static Owner getOwner(ProxiedPlayer player, PlayerExecutorBridge playerExecutorBridge, CloudPlayer cloudPlayer) {
-        return owners.stream().filter(owner -> owner.getPlayer().equals(player)).findFirst().orElse(new Owner(player, playerExecutorBridge, cloudPlayer));
     }
 
     /**
@@ -82,7 +72,8 @@ public class Owner {
     }
 
     private void sendPlayer(CloudServer cloudServer) {
-        playerExecutorBridge.sendPlayer(cloudPlayer, cloudServer.getName());
+        ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(cloudServer.getName());
+        player.connect(serverInfo);
     }
 
     /**
