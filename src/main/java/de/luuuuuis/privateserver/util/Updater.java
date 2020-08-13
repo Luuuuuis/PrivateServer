@@ -29,7 +29,7 @@ public class Updater {
     }
 
     private void report() {
-        System.err.println(Config.getInstance().getPrefix() + "A new version of PrivateServer is available. Please consider downloading the new version.\n" +
+        System.err.println(Config.getInstance().getPrefix() + "A newer version of PrivateServer is available. Please consider downloading the new version.\n" +
                 Config.getInstance().getPrefix() + "More information & download link at https://github.com/Luuuuuis/PrivateServer/releases/latest.");
     }
 

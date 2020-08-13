@@ -11,8 +11,11 @@ import net.md_5.bungee.config.YamlConfiguration;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
+import java.math.BigInteger;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -191,44 +194,43 @@ public class Metrics {
         return outputStream.toByteArray();
     }
 
-    public static String getUUID() {
-        String OS = System.getProperty("os.name").toLowerCase();
-        String machineId = null;
-        if (OS.contains("win")) {
-            StringBuffer output = new StringBuffer();
-            Process process;
-            String[] cmd = {"wmic", "csproduct", "get", "UUID"};
-            machineId = executeCmd(output, cmd);
-        } else if (OS.contains("nix") || OS.contains("nux") || OS.indexOf("aix") > 0) {
-            StringBuffer output = new StringBuffer();
-            Process process;
-            String[] cmd = {"/bin/sh", "-c", "echo <password for superuser> | sudo -S cat /sys/class/dmi/id/product_uuid"};
-            machineId = executeCmd(output, cmd);
-        }
-        return machineId;
-    }
 
-    private static String executeCmd(StringBuffer output, String[] cmd) {
-        Process process;
-        String machineId;
-        try {
-            process = Runtime.getRuntime().exec(cmd);
-            process.waitFor();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.contains("-"))
-                        return line;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } catch (IOException | InterruptedException e) {
+    /**
+     * Create UUID from IP, OS, USERNAME
+     *
+     * @return UUID
+     */
+    public static String getUUID() {
+        String IP = "localhost";
+        String OS = System.getProperty("os.name");
+        String USERNAME = System.getProperty("user.name");
+
+        try (final DatagramSocket socket = new DatagramSocket()) {
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            IP = socket.getLocalAddress().getHostAddress();
+        } catch (UnknownHostException | SocketException e) {
             e.printStackTrace();
         }
-        return null;
-    }
 
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] digest = md.digest((IP + OS + USERNAME).getBytes());
+            BigInteger no = new BigInteger(1, digest);
+
+            // Convert message digest into hex value
+            StringBuilder hashtext = new StringBuilder(no.toString(16));
+            while (hashtext.length() < 32) {
+                hashtext.insert(0, "0");
+            }
+
+            return hashtext.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
+        return IP + "_" + OS + "_" + USERNAME;
+    }
     /**
      * Checks if bStats is enabled.
      *
