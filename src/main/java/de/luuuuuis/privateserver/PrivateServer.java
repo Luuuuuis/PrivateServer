@@ -65,7 +65,6 @@ public class PrivateServer extends Plugin {
             bStats Metrics https://github.com/Bastian/bStats-Metrics/blob/master/bstats-bungeecord/src/examples/java/ExamplePlugin.java
             to disable these metrics change the bStats config and copy it into you template folder but please don't :C
          */
-        System.out.println("UUID: " + Metrics.getUUID());
         Metrics metrics = new Metrics(this, 8521);
         metrics.addCustomChart(new Metrics.SingleLineChart("private_servers_running", () -> CloudServer.getCloudServers().size()));
     }
