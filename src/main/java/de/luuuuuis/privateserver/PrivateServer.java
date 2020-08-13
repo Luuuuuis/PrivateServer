@@ -8,6 +8,7 @@ import de.luuuuuis.privateserver.events.ServerSwitch;
 import de.luuuuuis.privateserver.events.TabComplete;
 import de.luuuuuis.privateserver.util.CloudServer;
 import de.luuuuuis.privateserver.util.Config;
+import de.luuuuuis.privateserver.util.Metrics;
 import de.luuuuuis.privateserver.util.Updater;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
@@ -27,7 +28,7 @@ public class PrivateServer extends Plugin {
 
         /* stop all running private servers.
          * Sometimes only works when the BungeeCord is stopped with /end
-         * kinda weird of cloudnet idk
+         * kinda weird of CloudNet idk
          */
         CloudServer.getCloudServers().forEach(CloudServer::stop);
     }
@@ -59,5 +60,12 @@ public class PrivateServer extends Plugin {
         pluginManager.registerListener(this, new TabComplete());
         pluginManager.registerListener(this, new ServerSwitch());
         pluginManager.registerListener(this, new DisconnectListener());
+
+        /*
+            bStats Metrics https://github.com/Bastian/bStats-Metrics/blob/master/bstats-bungeecord/src/examples/java/ExamplePlugin.java
+            to disable these metrics change the bStats config and copy it into you template folder but please don't :C
+         */
+        Metrics metrics = new Metrics(this, 8521);
+        metrics.addCustomChart(new Metrics.SingleLineChart("private_servers_running", () -> CloudServer.getCloudServers().size()));
     }
 }
