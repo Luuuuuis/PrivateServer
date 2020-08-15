@@ -16,6 +16,10 @@ Create your own private game servers and invite your friends to play with you. O
 + privateserver.premium To start more than one server (Configurable in the config)
 + privateserver.list To get a more detailed list of servers running
 
+Furthermore, you can give every server owner on their private server any permissions you like.
+Install the same plugin on your spigot server and add permissions in the config.json. Easy!
+This enables features like trolling, forcing maps, force starts, etc.
+
 ### Features:
 + Server starting title 
 
@@ -29,6 +33,7 @@ Create your own private game servers and invite your friends to play with you. O
 
 ![Invitation receiver](https://i.ibb.co/VtmQBtg/image.png "invitation")
 
++ Permissions for private server owners
 + Messages are editable in the config
 + Frequent updates
 
@@ -39,13 +44,15 @@ Create your own private game servers and invite your friends to play with you. O
 + Startable groups
 + Max servers running on the whole server
 + Max servers per user
-+ Momory editable
++ Memory editable
++ Permissions for server owners editable
 
 ### Installation:
 1. Download the .jar
-2. Drag the .jar files into your plugin folder
+2. Drag the .jar file into your plugin folder
 3. Restart your BungeeCord server
 4. Optional: Edit config.json and restart again
+5. Optional: Copy the .jar file into your global/spigot group folder 
 
 ### Bugs / Questions?
 Discord: https://discord.gg/2aSSGcz  

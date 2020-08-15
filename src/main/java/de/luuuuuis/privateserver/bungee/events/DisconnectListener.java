@@ -22,7 +22,7 @@ public class DisconnectListener implements Listener {
 
         //Avoiding ConcurrentModificationException
         new ArrayList<>(owner.getServers())
-                .forEach(CloudServer::stop);
+                .forEach(CloudServer::remove);
     }
 
     @EventHandler

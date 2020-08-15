@@ -30,7 +30,7 @@ public class PrivateServer extends Plugin {
          * Sometimes only works when the BungeeCord is stopped with /end
          * kinda weird of CloudNet idk
          */
-        CloudServer.getCloudServers().forEach(CloudServer::stop);
+        CloudServer.getCloudServers().forEach(CloudServer::remove);
     }
 
     @Override

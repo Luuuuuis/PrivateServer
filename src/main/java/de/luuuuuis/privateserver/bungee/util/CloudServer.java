@@ -58,7 +58,18 @@ public class CloudServer {
         owner.sendTitle(this);
     }
 
-    public void stop() {
+    private void stop() {
+        if (CloudAPI.getInstance().getServerInfo(name) != null) {
+            getPlayers().forEach(player -> {
+                ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
+                proxiedPlayer.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "The server you were on was shutdown. You were moved to the fallback server."));
+            });
+
+            CloudAPI.getInstance().stopServer(name);
+        }
+    }
+
+    public void remove() {
         owner.sendMessage(Config.getInstance().getPrefix() + "Stopping " + name + "...");
 
         // remove from Invitee list
@@ -67,16 +78,9 @@ public class CloudServer {
                 .collect(Collectors.toList())
                 .forEach(Invitee::revoke);
 
-        CloudAPI.getInstance().stopServer(name);
+        stop();
         cloudServers.remove(this);
         owner.removeServer(this);
-
-        getPlayers().forEach(player -> {
-            ProxiedPlayer proxiedPlayer = ProxyServer.getInstance().getPlayer(player);
-            proxiedPlayer.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "The server you were on was shutdown. You were moved to the fallback server."));
-        });
-
-
     }
 
     private boolean isAllowed() {
@@ -105,14 +109,18 @@ public class CloudServer {
     }
 
     private String createName() {
-        name = "PV-" + new Random().nextInt(1000);
+        name = "PV-" + rndInt();
 
         //check if already there
         while (cloudServers.stream().anyMatch(server -> server.name.equals(name))) {
-            name = "PV-" + new Random().nextInt(1000);
+            name = "PV-" + rndInt();
         }
 
         return name;
+    }
+
+    private int rndInt() {
+        return new Random().nextInt(1000 - 1) + 1;
     }
 
     public List<String> getPlayers() {

@@ -46,7 +46,7 @@ public class Invitee {
         serverHover.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("§a§l" + cloudServer.getName())));
 
         player.sendMessage(new ComponentBuilder(Config.getInstance().getPrefix() + owner.getPlayer().getDisplayName() + " §7invited you to join him playing a private round of ")
-                .append(serverHover).append("§7.\n")
+                .append(serverHover).append("§7.\n", ComponentBuilder.FormatRetention.NONE)
                 .append(Config.getInstance().getPrefix() + "Click here to join: ")
                 .append(joinClick).create());
 

@@ -151,7 +151,7 @@ public class PrivateServerCmd extends Command {
 
                 CloudServer privateServer = owner.getServers().stream().filter(priServer -> priServer.getName().equalsIgnoreCase(server)).findFirst().orElse(null);
                 if (privateServer != null) {
-                    privateServer.stop();
+                    privateServer.remove();
                 } else {
                     p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "§cYou cannot stop that server."));
                 }

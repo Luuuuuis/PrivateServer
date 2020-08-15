@@ -55,7 +55,6 @@ public class Config {
         }
     }
 
-
     public ArrayList<String> getPermissions() {
         return permissions;
     }
