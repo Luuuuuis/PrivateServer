@@ -1,0 +1,8 @@
+name: PrivateServer
+version: "0.6.1"
+main: de.luuuuuis.privateserver.spigot.PrivateServer
+author: Luuuuuis
+##depends:
+##  - CloudNetAPI
+description: Start private servers for cloudnet 2.0
+website: https://github.com/Luuuuuis/PrivateServer

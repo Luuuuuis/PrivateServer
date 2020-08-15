@@ -1,6 +1,6 @@
-package de.luuuuuis.privateserver.util;
+package de.luuuuuis.privateserver.bungee.util;
 
-import de.luuuuuis.privateserver.PrivateServer;
+import de.luuuuuis.privateserver.bungee.PrivateServer;
 
 import java.io.File;
 import java.io.FileReader;
@@ -47,7 +47,7 @@ public class Config {
                 }
 
             // copy config
-            try (InputStream in = PrivateServer.class.getClassLoader().getResourceAsStream("config.json")) {
+            try (InputStream in = PrivateServer.class.getClassLoader().getResourceAsStream("config-bungee.json")) {
                 Files.copy(Objects.requireNonNull(in), Paths.get(config));
             } catch (IOException e) {
                 e.printStackTrace();

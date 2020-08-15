@@ -1,15 +1,15 @@
-package de.luuuuuis.privateserver;
+package de.luuuuuis.privateserver.bungee;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.luuuuuis.privateserver.commands.PrivateServerCmd;
-import de.luuuuuis.privateserver.events.DisconnectListener;
-import de.luuuuuis.privateserver.events.ServerSwitch;
-import de.luuuuuis.privateserver.events.TabComplete;
-import de.luuuuuis.privateserver.util.CloudServer;
-import de.luuuuuis.privateserver.util.Config;
-import de.luuuuuis.privateserver.util.Metrics;
-import de.luuuuuis.privateserver.util.Updater;
+import de.luuuuuis.privateserver.bungee.commands.PrivateServerCmd;
+import de.luuuuuis.privateserver.bungee.events.DisconnectListener;
+import de.luuuuuis.privateserver.bungee.events.ServerSwitch;
+import de.luuuuuis.privateserver.bungee.events.TabComplete;
+import de.luuuuuis.privateserver.bungee.util.CloudServer;
+import de.luuuuuis.privateserver.bungee.util.Config;
+import de.luuuuuis.privateserver.bungee.util.Metrics;
+import de.luuuuuis.privateserver.bungee.util.Updater;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 

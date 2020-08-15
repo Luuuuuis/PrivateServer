@@ -1,8 +1,8 @@
-package de.luuuuuis.privateserver.events;
+package de.luuuuuis.privateserver.bungee.events;
 
-import de.luuuuuis.privateserver.util.CloudServer;
-import de.luuuuuis.privateserver.util.Invitee;
-import de.luuuuuis.privateserver.util.Owner;
+import de.luuuuuis.privateserver.bungee.util.CloudServer;
+import de.luuuuuis.privateserver.bungee.util.Invitee;
+import de.luuuuuis.privateserver.bungee.util.Owner;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -34,5 +34,4 @@ public class DisconnectListener implements Listener {
                 .collect(Collectors.toList())
                 .forEach(Invitee::revoke);
     }
-
 }

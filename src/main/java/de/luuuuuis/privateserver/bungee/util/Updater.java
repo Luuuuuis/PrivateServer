@@ -1,7 +1,7 @@
-package de.luuuuuis.privateserver.util;
+package de.luuuuuis.privateserver.bungee.util;
 
 import com.google.gson.JsonObject;
-import de.luuuuuis.privateserver.PrivateServer;
+import de.luuuuuis.privateserver.bungee.PrivateServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

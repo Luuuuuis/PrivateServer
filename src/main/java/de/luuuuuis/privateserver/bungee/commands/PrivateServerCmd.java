@@ -1,12 +1,12 @@
-package de.luuuuuis.privateserver.commands;
+package de.luuuuuis.privateserver.bungee.commands;
 
 import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.api.player.PlayerExecutorBridge;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
-import de.luuuuuis.privateserver.util.CloudServer;
-import de.luuuuuis.privateserver.util.Config;
-import de.luuuuuis.privateserver.util.Invitee;
-import de.luuuuuis.privateserver.util.Owner;
+import de.luuuuuis.privateserver.bungee.util.CloudServer;
+import de.luuuuuis.privateserver.bungee.util.Config;
+import de.luuuuuis.privateserver.bungee.util.Invitee;
+import de.luuuuuis.privateserver.bungee.util.Owner;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;

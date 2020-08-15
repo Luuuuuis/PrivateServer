@@ -1,4 +1,4 @@
-package de.luuuuuis.privateserver.util;
+package de.luuuuuis.privateserver.bungee.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -92,7 +92,6 @@ public class Metrics {
 
         // We are not allowed to send data about this server :(
         if (!enabled) {
-            System.err.println(Config.getInstance().getPrefix() + "bStats is deactivated. :C");
             return;
         }
 
@@ -223,7 +222,7 @@ public class Metrics {
                 hashtext.insert(0, "0");
             }
 
-            return hashtext.toString();
+            return hashtext.toString().toUpperCase();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

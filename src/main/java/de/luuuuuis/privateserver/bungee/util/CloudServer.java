@@ -1,4 +1,4 @@
-package de.luuuuuis.privateserver.util;
+package de.luuuuuis.privateserver.bungee.util;
 
 import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.lib.server.ServerConfig;

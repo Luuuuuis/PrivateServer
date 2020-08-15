@@ -1,7 +1,7 @@
-package de.luuuuuis.privateserver.events;
+package de.luuuuuis.privateserver.bungee.events;
 
-import de.luuuuuis.privateserver.util.CloudServer;
-import de.luuuuuis.privateserver.util.Config;
+import de.luuuuuis.privateserver.bungee.util.CloudServer;
+import de.luuuuuis.privateserver.bungee.util.Config;
 import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
