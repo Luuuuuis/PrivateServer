@@ -30,9 +30,11 @@ public class PrivateServer extends JavaPlugin {
         owner = new Owner();
 
         PluginManager pluginManager = getServer().getPluginManager();
-        if (owner.getUuid() != null) {
+        if (owner.getUuid() == null) {
             // This is not a private server
+            System.err.println("[PrivateServer] This is not a privateserver. Disabling plugin.");
             pluginManager.disablePlugin(this);
+            return;
         }
         pluginManager.registerEvents(new JoinListener(), this);
     }
