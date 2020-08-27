@@ -2,16 +2,23 @@ name: Discord Update
 
 on:
   release:
+    types: [published]
   
 jobs:
   send:
     runs-on: ubuntu-latest
 
     steps:
+      - id: version
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          owner: Luuuuuis
+          repo: PrivateServer
+          excludes: prerelease, draft
       - name: send message
         uses: appleboy/discord-action@master
         with:
           webhook_id: ${{ secrets.WEBHOOK_ID }}
           webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
           file: "https://github.com/Luuuuuis/PrivateServer/releases/latest/download/PrivateServer.jar"
-          message: "An update for PrivateServer is avilable. Download now."
+          message: "PrivateServer v${{ steps.version.outputs.release }} is available. Download now!\nhttps://github.com/Luuuuuis/PrivateServer/releases/latest"
