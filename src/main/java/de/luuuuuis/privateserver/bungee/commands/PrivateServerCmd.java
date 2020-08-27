@@ -63,8 +63,8 @@ public class PrivateServerCmd extends Command {
                     new Owner(p, playerExecutorBridge, cloudPlayer);
                 }
 
-                CloudServer cloudServer = new CloudServer(strings[1], Config.getInstance().getTemplate(), p);
-                if (p.hasPermission("privateserver.premium") && strings[2] != null && !strings[2].isEmpty()) {
+                CloudServer cloudServer = new CloudServer(strings[1], p);
+                if (p.hasPermission("privateserver.premium") && strings.length == 3) {
                     if (cloudServer.getGroupMode().equals(ServerGroupMode.STATIC)) {
                         try {
                             int serverID = Integer.parseInt(strings[2]);
@@ -77,6 +77,8 @@ public class PrivateServerCmd extends Command {
                             cloudServer.getOwner().sendMessage(Config.getInstance().getPrefix() + "§cServer ID has to be greater than 0 and smaller than " + (Config.getInstance().getMaxServersPerUser() + 1));
                             return;
                         }
+                    } else {
+                        cloudServer.getOwner().sendMessage(Config.getInstance().getPrefix() + "§cYou may only specify a ServerID with a static group");
                     }
                 }
 

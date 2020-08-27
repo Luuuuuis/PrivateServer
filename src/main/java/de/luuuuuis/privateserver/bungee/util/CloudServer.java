@@ -21,9 +21,9 @@ public class CloudServer {
     private final ServerGroupMode groupMode;
     private String name;
 
-    public CloudServer(String group, String template, ProxiedPlayer player) {
+    public CloudServer(String group, ProxiedPlayer player) {
         this.group = group;
-        this.template = template;
+        this.template = Config.getInstance().getTemplate();
         this.owner = Owner.getOwner(player);
 
         name = createName();
@@ -124,10 +124,6 @@ public class CloudServer {
         return name;
     }
 
-    public void setName(int ID) {
-        this.name = owner.getPlayer().getName() + "-" + ID;
-    }
-
     public List<String> getPlayers() {
         return CloudAPI.getInstance().getServerInfo(name).getPlayers();
     }
@@ -138,6 +134,10 @@ public class CloudServer {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(int ID) {
+        this.name = owner.getPlayer().getName() + "-" + ID;
     }
 
     public String getGroup() {
