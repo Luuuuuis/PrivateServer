@@ -68,7 +68,6 @@ public class PrivateServerCmd extends Command {
                     if (cloudServer.getGroupMode().equals(ServerGroupMode.STATIC)) {
                         try {
                             int serverID = Integer.parseInt(strings[2]);
-                            System.out.println("ID: " + serverID + " string[2]: " + strings[2]);
                             if (serverID < 0 || serverID > Config.getInstance().getMaxServersPerUser()) {
                                 throw new NumberFormatException(serverID + " is not in the requested range");
                             }
@@ -76,7 +75,6 @@ public class PrivateServerCmd extends Command {
                             cloudServer.setName(serverID);
                         } catch (NumberFormatException e) {
                             cloudServer.getOwner().sendMessage(Config.getInstance().getPrefix() + "§cServer ID has to be greater than 0 and smaller than " + (Config.getInstance().getMaxServersPerUser() + 1));
-                            e.printStackTrace();
                             return;
                         }
                     }
