@@ -20,5 +20,4 @@ jobs:
         with:
           webhook_id: ${{ secrets.WEBHOOK_ID }}
           webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-          file: "https://github.com/Luuuuuis/PrivateServer/releases/latest/download/PrivateServer.jar"
           message: "PrivateServer v${{ steps.version.outputs.release }} is available. Download now!\nhttps://github.com/Luuuuuis/PrivateServer/releases/latest"
