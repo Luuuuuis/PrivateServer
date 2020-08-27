@@ -2,8 +2,7 @@ name: Discord Update
 
 on:
   release:
-    types:
-      - created
+  
 jobs:
   send:
     runs-on: ubuntu-latest
