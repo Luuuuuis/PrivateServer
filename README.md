@@ -4,7 +4,7 @@ Free & open-source private server system for CloudNET 2
 Create your own private game servers and invite your friends to play with you. Only with you.
 
 ### Commands:
-+ /privateserver start [GROUP]
++ /privateserver start [GROUP] (ServerID)
 + /privateserver status
 + /privateserver invite [PLAYER] (invite multiple players at once)
 + /privateserver stop [SERVER] 
@@ -33,9 +33,13 @@ This enables features like trolling, forcing maps, force starts, etc.
 
 ![Invitation receiver](https://i.ibb.co/VtmQBtg/image.png "invitation")
 
++ Static servers that stay
 + Permissions for private server owners
 + Messages are editable in the config
 + Frequent updates
+
+### Static servers:
+A static server will save the world, plugins, etc. after a shutdown. Set the group mode to STATIC. 
 
 ### Config:
 + Prefix editable

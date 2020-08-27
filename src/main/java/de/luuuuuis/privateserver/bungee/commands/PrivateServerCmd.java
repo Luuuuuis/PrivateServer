@@ -3,6 +3,7 @@ package de.luuuuuis.privateserver.bungee.commands;
 import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.api.player.PlayerExecutorBridge;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
+import de.dytanic.cloudnet.lib.server.ServerGroupMode;
 import de.luuuuuis.privateserver.bungee.util.CloudServer;
 import de.luuuuuis.privateserver.bungee.util.Config;
 import de.luuuuuis.privateserver.bungee.util.Invitee;
@@ -46,7 +47,7 @@ public class PrivateServerCmd extends Command {
 
         switch (strings[0].toLowerCase()) {
             case "start":
-                if (strings.length != 2 || strings[1] == null || strings[1].isEmpty()) {
+                if (strings.length > 3 || strings[1] == null || strings[1].isEmpty()) {
                     StringJoiner joiner = new StringJoiner(", ");
                     Config.getInstance().getGroups().forEach(joiner::add);
 
@@ -62,7 +63,26 @@ public class PrivateServerCmd extends Command {
                     new Owner(p, playerExecutorBridge, cloudPlayer);
                 }
 
-                new CloudServer(strings[1], Config.getInstance().getTemplate(), p).start();
+                CloudServer cloudServer = new CloudServer(strings[1], Config.getInstance().getTemplate(), p);
+                if (p.hasPermission("privateserver.premium") && strings[2] != null && !strings[2].isEmpty()) {
+                    if (cloudServer.getGroupMode().equals(ServerGroupMode.STATIC)) {
+                        try {
+                            int serverID = Integer.parseInt(strings[2]);
+                            System.out.println("ID: " + serverID + " string[2]: " + strings[2]);
+                            if (serverID < 0 || serverID > Config.getInstance().getMaxServersPerUser()) {
+                                throw new NumberFormatException(serverID + " is not in the requested range");
+                            }
+
+                            cloudServer.setName(serverID);
+                        } catch (NumberFormatException e) {
+                            cloudServer.getOwner().sendMessage(Config.getInstance().getPrefix() + "§cServer ID has to be greater than 0 and smaller than " + (Config.getInstance().getMaxServersPerUser() + 1));
+                            e.printStackTrace();
+                            return;
+                        }
+                    }
+                }
+
+                cloudServer.start();
                 break;
             case "status":
                 p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "Private Servers: "));
@@ -164,7 +184,7 @@ public class PrivateServerCmd extends Command {
     }
 
     private String defaultMessage() {
-        return Config.getInstance().getPrefix() + "/pv start [GROUP]\n" +
+        return Config.getInstance().getPrefix() + "/pv start [GROUP] (ServerID)\n" +
                 Config.getInstance().getPrefix() + "/pv status\n" +
                 Config.getInstance().getPrefix() + "/pv invite [PLAYER]\n" +
                 Config.getInstance().getPrefix() + "/pv stop [SERVER]";

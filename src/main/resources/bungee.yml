@@ -1,10 +1,10 @@
 name: PrivateServer
-version: "0.7.1"
+version: "0.8"
 main: de.luuuuuis.privateserver.bungee.PrivateServer
 author: Luuuuuis
 depends:
   - CloudNetAPI
-description: Start private servers for cloudnet 2.0
+description: Start private servers for CloudNet 2
 website: https://github.com/Luuuuuis/PrivateServer
 
 commands:

@@ -2,6 +2,7 @@ package de.luuuuuis.privateserver.bungee.util;
 
 import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.lib.server.ServerConfig;
+import de.dytanic.cloudnet.lib.server.ServerGroupMode;
 import de.dytanic.cloudnet.lib.server.template.Template;
 import de.dytanic.cloudnet.lib.server.template.TemplateResource;
 import de.dytanic.cloudnet.lib.utility.document.Document;
@@ -17,6 +18,7 @@ public class CloudServer {
     private final static List<CloudServer> cloudServers = new ArrayList<>();
     private final String group, template;
     private final Owner owner;
+    private final ServerGroupMode groupMode;
     private String name;
 
     public CloudServer(String group, String template, ProxiedPlayer player) {
@@ -25,6 +27,7 @@ public class CloudServer {
         this.owner = Owner.getOwner(player);
 
         name = createName();
+        groupMode = CloudAPI.getInstance().getServerGroupData(group).getMode();
     }
 
     public static CloudServer getCloudServer(String serverName) {
@@ -39,6 +42,7 @@ public class CloudServer {
         if (!isAllowed())
             return;
 
+
         CloudAPI.getInstance().startGameServer(CloudAPI.getInstance().getServerGroupData(group),
                 new ServerConfig(true, "null", new Document("uniqueId", owner.getUniqueId()), System.currentTimeMillis()),
                 Config.getInstance().getMemory(),
@@ -50,6 +54,7 @@ public class CloudServer {
                 new Properties(),
                 null,
                 Collections.emptyList());
+
 
         cloudServers.add(this);
         owner.getServers().add(this);
@@ -109,18 +114,18 @@ public class CloudServer {
     }
 
     private String createName() {
-        name = "PV-" + rndInt();
-
         //check if already there
-        while (cloudServers.stream().anyMatch(server -> server.name.equals(name))) {
-            name = "PV-" + rndInt();
-        }
+        int i = 1;
+        do {
+            name = owner.getPlayer().getName() + "-" + i;
+            i++;
+        } while (cloudServers.stream().anyMatch(server -> server.name.equals(name)));
 
         return name;
     }
 
-    private int rndInt() {
-        return new Random().nextInt(1000 - 1) + 1;
+    public void setName(int ID) {
+        this.name = owner.getPlayer().getName() + "-" + ID;
     }
 
     public List<String> getPlayers() {
@@ -139,7 +144,13 @@ public class CloudServer {
         return group;
     }
 
+    public ServerGroupMode getGroupMode() {
+        return groupMode;
+    }
+
     public Owner getOwner() {
         return owner;
     }
+
+
 }
