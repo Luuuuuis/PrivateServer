@@ -4,16 +4,17 @@ Free & open-source private server system for CloudNET 2
 Create your own private game servers and invite your friends to play with you. Only with you.
 
 ### Commands:
-+ /privateserver start [GROUP] (ServerID)
++ /privateserver start [GROUP] (Template/ServerID)
 + /privateserver status
 + /privateserver invite [PLAYER] (invite multiple players at once)
++ /privateserver join [PLAYER/SERVER]
 + /privateserver stop [SERVER] 
 
 ![Commands](https://i.ibb.co/SNBKw1M/image.png "Commands")
 
 ### Permissions:
 + privateserver To start/stop servers
-+ privateserver.premium To start more than one server (Configurable in the config)
++ privateserver.premium To start more than one server (Configurable in the config) & To start a server with a server id
 + privateserver.list To get a more detailed list of servers running
 
 Furthermore, you can give every server owner on their private server any permissions you like.
