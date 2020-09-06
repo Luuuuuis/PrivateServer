@@ -4,6 +4,7 @@ import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.api.player.PlayerExecutorBridge;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
 import de.dytanic.cloudnet.lib.server.ServerGroupMode;
+import de.dytanic.cloudnet.lib.server.template.Template;
 import de.luuuuuis.privateserver.bungee.util.CloudServer;
 import de.luuuuuis.privateserver.bungee.util.Config;
 import de.luuuuuis.privateserver.bungee.util.Invitee;
@@ -14,10 +15,8 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PrivateServerCmd extends Command {
 
@@ -45,6 +44,9 @@ public class PrivateServerCmd extends Command {
 
         Owner owner = Owner.getOwner(p);
 
+        CloudPlayer cloudPlayer = CloudAPI.getInstance().getOnlinePlayer(p.getUniqueId());
+        PlayerExecutorBridge playerExecutorBridge = new PlayerExecutorBridge();
+
         switch (strings[0].toLowerCase()) {
             case "start":
                 if (strings.length > 3 || strings[1] == null || strings[1].isEmpty()) {
@@ -55,32 +57,48 @@ public class PrivateServerCmd extends Command {
                     return;
                 }
 
-                CloudPlayer cloudPlayer = CloudAPI.getInstance().getOnlinePlayer(p.getUniqueId());
-                PlayerExecutorBridge playerExecutorBridge = new PlayerExecutorBridge();
-
                 //create owner object
                 if (owner == null) {
                     new Owner(p, playerExecutorBridge, cloudPlayer);
                 }
 
-                CloudServer cloudServer = new CloudServer(strings[1], p);
-                if (p.hasPermission("privateserver.premium") && strings.length == 3) {
-                    if (cloudServer.getGroupMode().equals(ServerGroupMode.STATIC)) {
-                        try {
-                            int serverID = Integer.parseInt(strings[2]);
-                            if (serverID < 0 || serverID > Config.getInstance().getMaxServersPerUser()) {
-                                throw new NumberFormatException(serverID + " is not in the requested range");
-                            }
 
-                            cloudServer.setName(serverID);
-                        } catch (NumberFormatException e) {
-                            cloudServer.getOwner().sendMessage(Config.getInstance().getPrefix() + "§cServer ID has to be greater than 0 and smaller than " + (Config.getInstance().getMaxServersPerUser() + 1));
+                CloudServer cloudServer = new CloudServer(strings[1], p);
+
+                if (strings.length == 3) {
+                    try {
+                        int templateID = Integer.parseInt(strings[2]);
+                        if (templateID < 0 || templateID > Config.getInstance().getMaxServersPerUser()) {
+                            throw new OutOfRangeException(templateID + " is not in the requested range");
+                        }
+
+                        if (!p.hasPermission("privateserver.premium")) {
+                            cloudServer.getOwner().sendMessage(Config.getInstance().getPrefix() + "§cYou don't have permission to start a server with an ID.");
                             return;
                         }
-                    } else {
-                        cloudServer.getOwner().sendMessage(Config.getInstance().getPrefix() + "§cYou may only specify a ServerID with a static group");
+
+                        if (!cloudServer.getGroupMode().equals(ServerGroupMode.STATIC)) {
+                            cloudServer.getOwner().sendMessage(Config.getInstance().getPrefix() + "§cYou may only specify a ServerID with a static group");
+                            return;
+                        }
+
+                        cloudServer.setName(templateID);
+                    } catch (NumberFormatException e) {
+                        Collection<Template> templates = CloudAPI.getInstance().getServerGroup(strings[1]).getTemplates();
+
+                        if (templates.stream().anyMatch(template -> template.getName().equals(strings[2]))) {
+                            cloudServer.setTemplate(Objects.requireNonNull(templates.stream().filter(template -> template.getName().equals(strings[2])).findFirst().orElse(null)).getName());
+                        } else {
+                            String joinedTemplates = templates.stream().map(Template::getName).collect(Collectors.joining(", "));
+                            p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "You may only start one of these templates: §a" + joinedTemplates));
+                            return;
+                        }
+                    } catch (OutOfRangeException e) {
+                        p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "§c" + e.getMessage()));
+                        return;
                     }
                 }
+
 
                 cloudServer.start();
                 break;
@@ -145,6 +163,12 @@ public class PrivateServerCmd extends Command {
 
                 Invitee invitee = Invitee.getInvitee(p, CloudServer.getCloudServer(strings[1]));
                 if (invitee == null) {
+                    CloudServer cs = CloudServer.getCloudServers().stream().filter(cloudServer1 -> cloudServer1.getOwner().getUniqueId().equals(p.getUniqueId())).findFirst().orElse(null);
+                    if (cs != null) {
+                        playerExecutorBridge.sendPlayer(cloudPlayer, cs.getName());
+                        return;
+                    }
+
                     p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "§cYou are not invited to the party :("));
                     return;
                 }
@@ -184,9 +208,16 @@ public class PrivateServerCmd extends Command {
     }
 
     private String defaultMessage() {
-        return Config.getInstance().getPrefix() + "/pv start [GROUP] (ServerID)\n" +
+        return Config.getInstance().getPrefix() + "/pv start [GROUP] (Template/ServerID)\n" +
                 Config.getInstance().getPrefix() + "/pv status\n" +
                 Config.getInstance().getPrefix() + "/pv invite [PLAYER]\n" +
+                Config.getInstance().getPrefix() + "/pv join [PLAYER/SERVER]\n" +
                 Config.getInstance().getPrefix() + "/pv stop [SERVER]";
+    }
+}
+
+class OutOfRangeException extends Exception {
+    public OutOfRangeException(String errorMessage) {
+        super(errorMessage);
     }
 }

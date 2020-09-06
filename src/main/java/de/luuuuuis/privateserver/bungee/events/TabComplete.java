@@ -6,14 +6,13 @@ import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class TabComplete implements Listener {
 
-    String regex = "^/(pv|privateserver)\\s(start|stop)\\s";
+    String regex = "^/(pv|privateserver)\\s(start|stop|join)\\s";
 
     @EventHandler
     public void onTabComplete(TabCompleteEvent e) {
@@ -25,9 +24,8 @@ public class TabComplete implements Listener {
                     e.getSuggestions().addAll(Config.getInstance().getGroups());
                     break;
                 case "stop":
-                    List<String> servers = new ArrayList<>();
-                    CloudServer.getCloudServers().stream().filter(privateServer -> privateServer.getOwner().getPlayer().equals(e.getSender())).forEach(server -> servers.add(server.getName()));
-                    e.getSuggestions().addAll(servers);
+                case "join":
+                    e.getSuggestions().addAll(CloudServer.getCloudServers().stream().filter(privateServer -> privateServer.getOwner().getPlayer().equals(e.getSender())).map(CloudServer::getName).collect(Collectors.toList()));
                     break;
             }
         }

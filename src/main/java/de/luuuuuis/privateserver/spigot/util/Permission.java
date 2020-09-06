@@ -16,12 +16,8 @@ public class Permission extends PermissionEntity {
 
     @Override
     public boolean hasPermission(PermissionPool permissionPool, String permission, String group) {
-        if (this.permissions.contains(permission)) {
-            System.out.println(permission + " true");
+        if (this.permissions.contains(permission))
             return true;
-        } else {
-            System.out.println(permission + " false");
-        }
 
         return super.hasPermission(permissionPool, permission, group);
     }

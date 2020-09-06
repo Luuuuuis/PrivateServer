@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 public class CloudServer {
 
     private final static List<CloudServer> cloudServers = new ArrayList<>();
-    private final String group, template;
+    private final String group;
     private final Owner owner;
     private final ServerGroupMode groupMode;
+    private String template = Config.getInstance().getTemplate();
     private String name;
 
     public CloudServer(String group, ProxiedPlayer player) {
         this.group = group;
-        this.template = Config.getInstance().getTemplate();
         this.owner = Owner.getOwner(player);
 
         name = createName();
@@ -124,6 +124,10 @@ public class CloudServer {
         return name;
     }
 
+    public void setTemplate(String template) {
+        this.template = template;
+    }
+
     public List<String> getPlayers() {
         return CloudAPI.getInstance().getServerInfo(name).getPlayers();
     }
@@ -137,7 +141,9 @@ public class CloudServer {
     }
 
     public void setName(int ID) {
-        this.name = owner.getPlayer().getName() + "-" + ID;
+        if (cloudServers.stream().noneMatch(server -> server.getName().equals(server.getOwner().getPlayer().getName() + "-" + ID))) {
+            this.name = owner.getPlayer().getName() + "-" + ID;
+        }
     }
 
     public String getGroup() {

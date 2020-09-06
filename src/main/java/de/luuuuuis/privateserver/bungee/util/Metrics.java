@@ -28,7 +28,7 @@ import java.util.zip.GZIPOutputStream;
  * <p>
  * Check out https://bStats.org/ to learn more about bStats!
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess"})
 public class Metrics {
 
     // The version of this bStats class
@@ -228,15 +228,6 @@ public class Metrics {
 
 
         return IP + "_" + OS + "_" + USERNAME;
-    }
-
-    /**
-     * Checks if bStats is enabled.
-     *
-     * @return Whether bStats is enabled or not.
-     */
-    public boolean isEnabled() {
-        return enabled;
     }
 
     /**
