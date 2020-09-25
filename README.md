@@ -16,6 +16,7 @@ Create your own private game servers and invite your friends to play with you. O
 + privateserver To start/stop servers
 + privateserver.premium To start more than one server (Configurable in the config) & To start a server with a server id
 + privateserver.list To get a more detailed list of servers running
++ privateserver.start.[Group Name]
 
 Furthermore, you can give every server owner on their private server any permissions you like.
 Install the same plugin on your spigot server and add permissions in the config.json. Easy!
@@ -36,6 +37,7 @@ This enables features like trolling, forcing maps, force starts, etc.
 
 + Static servers that stay
 + Permissions for private server owners
++ Spigot command to customize your server with NPCs that execute commands
 + Messages are editable in the config
 + Frequent updates
 
