@@ -1,5 +1,6 @@
 package de.luuuuuis.privateserver.bungee.util;
 
+import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -12,6 +13,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Invitee {
 
     private final static List<Invitee> invitees = new ArrayList<>();
@@ -73,17 +75,5 @@ public class Invitee {
 
     public void sendMessage(String message) {
         player.sendMessage(TextComponent.fromLegacyText(message));
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public ProxiedPlayer getPlayer() {
-        return player;
-    }
-
-    public CloudServer getCloudServer() {
-        return cloudServer;
     }
 }

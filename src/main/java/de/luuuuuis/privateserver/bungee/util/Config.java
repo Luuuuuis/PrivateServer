@@ -1,6 +1,7 @@
 package de.luuuuuis.privateserver.bungee.util;
 
 import de.luuuuuis.privateserver.bungee.PrivateServer;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.FileReader;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+@Getter
 public class Config {
 
     private static Config instance;
@@ -64,33 +66,5 @@ public class Config {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public String getTemplate() {
-        return template;
-    }
-
-    public HashMap<String, Object> getMessages() {
-        return messages;
-    }
-
-    public ArrayList<String> getGroups() {
-        return groups;
-    }
-
-    public int getMaxServersRunning() {
-        return maxServersRunning;
-    }
-
-    public int getMaxServersPerUser() {
-        return maxServersPerUser;
-    }
-
-    public int getMemory() {
-        return memory;
     }
 }

@@ -163,7 +163,7 @@ public class PrivateServerCmd extends Command {
 
                 Invitee invitee = Invitee.getInvitee(p, CloudServer.getCloudServer(strings[1]));
                 if (invitee == null) {
-                    CloudServer cs = CloudServer.getCloudServers().stream().filter(cloudServer1 -> cloudServer1.getOwner().getUniqueId().equals(p.getUniqueId())).findFirst().orElse(null);
+                    CloudServer cs = CloudServer.getCloudServers().stream().filter(cloudServer1 -> cloudServer1.getOwner().getPlayer().getUniqueId().equals(p.getUniqueId())).findFirst().orElse(null);
                     if (cs != null) {
                         playerExecutorBridge.sendPlayer(cloudPlayer, cs.getName());
                         return;

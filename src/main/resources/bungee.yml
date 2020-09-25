@@ -1,5 +1,5 @@
 name: PrivateServer
-version: "0.9"
+version: "0.10"
 main: de.luuuuuis.privateserver.bungee.PrivateServer
 author: Luuuuuis
 depends:

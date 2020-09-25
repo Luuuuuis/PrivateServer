@@ -1,8 +1,14 @@
 name: PrivateServer
-version: "0.9"
+version: "0.10"
 main: de.luuuuuis.privateserver.spigot.PrivateServer
 author: Luuuuuis
 depends:
   - CloudNetAPI
 description: Start private servers for CloudNet 2
 website: https://github.com/Luuuuuis/PrivateServer
+
+commands:
+  privateserver:
+    description: private server command on the spigot server
+    aliases:
+      - pv

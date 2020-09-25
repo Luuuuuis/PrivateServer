@@ -24,10 +24,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@Deprecated
 public class NPCListener implements Listener {
 
     private final PrivateServer privateServer;
-    private final Map<Player, NPC> npcs = new HashMap<>();
+    private final Map<Player, NPC> NPCs = new HashMap<>();
 
     public NPCListener(PrivateServer privateServer) {
         this.privateServer = privateServer;
@@ -47,7 +48,7 @@ public class NPCListener implements Listener {
         npc.create();
         npc.show(p);
 
-        npcs.put(p, npc);
+        NPCs.put(p, npc);
 
         // Sets head rotation for the npc if the player is in a range of 15 blocks
         // Author: @yanjulang
@@ -109,19 +110,20 @@ public class NPCListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
 
-        NPC npc = npcs.get(p);
+        NPC npc = NPCs.get(p);
         npc.destroy();
 
-        npcs.remove(p);
+        NPCs.remove(p);
     }
 
     @EventHandler
     public void onInteract(NPCInteractEvent e) {
-        NPC npc = npcs.get(e.getWhoClicked());
+        NPC npc = NPCs.get(e.getWhoClicked());
 
         if (e.getNPC().equals(npc)) {
-
+            // do things with NPC. (e.g. open inv)
         }
 
     }
+
 }

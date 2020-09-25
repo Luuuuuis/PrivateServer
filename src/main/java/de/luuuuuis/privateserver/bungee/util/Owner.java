@@ -3,6 +3,7 @@ package de.luuuuuis.privateserver.bungee.util;
 import de.dytanic.cloudnet.api.CloudAPI;
 import de.dytanic.cloudnet.api.player.PlayerExecutorBridge;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
+import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -10,8 +11,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+@Getter
 public class Owner {
 
     private final static List<Owner> owners = new ArrayList<>();
@@ -45,21 +46,25 @@ public class Owner {
      * @param cloudServer the CloudServer you want to send the player
      */
     public void sendTitle(CloudServer cloudServer) {
-        Thread th = new Thread(() -> {
+        new Thread(() -> {
             //send title & to server
             int i = 0;
-            while (CloudAPI.getInstance().getServerInfo(cloudServer.getName()) == null || !CloudAPI.getInstance().getServerInfo(cloudServer.getName()).isOnline()) {
+            while (CloudAPI.getInstance().getServerInfo(cloudServer.getName()) == null ||
+                    !CloudAPI.getInstance().getServerInfo(cloudServer.getName()).isOnline()) {
                 i++;
                 StringBuilder dots = new StringBuilder();
                 for (int j = 0; j < i; j++) {
                     dots.append(".");
                 }
 
-                playerExecutorBridge.sendTitle(cloudPlayer, "", String.format(Config.getInstance().getMessages().get("startingTitle").toString(), dots), 0, 20, 0);
+                playerExecutorBridge.sendTitle(cloudPlayer, "",
+                        String.format(Config.getInstance().getMessages().get("startingTitle").toString(), dots),
+                        0, 20, 0);
 
                 if (i >= 3) i = 0;
 
                 try {
+                    //noinspection BusyWait
                     Thread.sleep(750);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -67,8 +72,7 @@ public class Owner {
             }
             sendPlayer(cloudServer);
 
-        });
-        th.start();
+        }).start();
     }
 
     private void sendPlayer(CloudServer cloudServer) {
@@ -93,16 +97,38 @@ public class Owner {
         if (servers.isEmpty())
             owners.remove(this);
     }
-
-    public UUID getUniqueId() {
-        return player.getUniqueId();
-    }
-
-    public ProxiedPlayer getPlayer() {
-        return player;
-    }
-
-    public List<CloudServer> getServers() {
-        return servers;
-    }
 }
+
+
+//@Data class Task implements Callable<Boolean> {
+//
+//    private final PlayerExecutorBridge playerExecutorBridge;
+//    private final CloudPlayer cloudPlayer;
+//    private final CloudServer cloudServer;
+//
+//    @Override
+//    public Boolean call() throws InterruptedException {
+//
+//        //send title
+//        int i = 0;
+//        do {
+//            i++;
+//            StringBuilder dots = new StringBuilder();
+//            for (int j = 0; j < i; j++) {
+//                dots.append(".");
+//            }
+//
+//            playerExecutorBridge.sendTitle(cloudPlayer, "", String.format(Config.getInstance().getMessages().get("startingTitle").toString(), dots), 0, 20, 0);
+//
+//            if (i >= 3) i = 0;
+//
+//
+//            Thread.sleep(750);
+//        } while ((CloudAPI.getInstance().getServerInfo(cloudServer.getName()) == null
+//                || !CloudAPI.getInstance().getServerInfo(cloudServer.getName()).isOnline())
+//                && !Thread.interrupted());
+//
+//        return true;
+//    }
+//
+//}

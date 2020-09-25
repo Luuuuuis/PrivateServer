@@ -4,23 +4,23 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.luuuuuis.privateserver.bungee.commands.PrivateServerCmd;
 import de.luuuuuis.privateserver.bungee.events.DisconnectListener;
+import de.luuuuuis.privateserver.bungee.events.PluginMessageReceive;
 import de.luuuuuis.privateserver.bungee.events.ServerSwitch;
 import de.luuuuuis.privateserver.bungee.events.TabComplete;
 import de.luuuuuis.privateserver.bungee.util.CloudServer;
 import de.luuuuuis.privateserver.bungee.util.Config;
 import de.luuuuuis.privateserver.bungee.util.Metrics;
 import de.luuuuuis.privateserver.bungee.util.Updater;
+import lombok.Getter;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
 public class PrivateServer extends Plugin {
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    @Getter
     private static PrivateServer instance;
 
-    public static PrivateServer getInstance() {
-        return instance;
-    }
 
     @Override
     public void onDisable() {
@@ -54,6 +54,7 @@ public class PrivateServer extends Plugin {
         //updater
         new Updater();
 
+
         //commands
         PluginManager pluginManager = getProxy().getPluginManager();
         pluginManager.registerCommand(this, new PrivateServerCmd());
@@ -61,8 +62,14 @@ public class PrivateServer extends Plugin {
         pluginManager.registerListener(this, new ServerSwitch());
         pluginManager.registerListener(this, new DisconnectListener());
 
+        // receive plugin messages and execute spigot commands on BungeeCord
+        getProxy().registerChannel("pv:cmd");
+        pluginManager.registerListener(this, new PluginMessageReceive());
+
+
         /*
             bStats Metrics https://github.com/Bastian/bStats-Metrics/blob/master/bstats-bungeecord/src/examples/java/ExamplePlugin.java
+            Available here: https://bstats.org/plugin/bungeecord/PrivateServer/8521
             to disable these metrics change the bStats config and copy it into you template folder but please don't :C
          */
         Metrics metrics = new Metrics(this, 8521);

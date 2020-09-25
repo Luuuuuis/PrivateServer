@@ -1,21 +1,26 @@
 package de.luuuuuis.privateserver.spigot.util;
 
 import de.dytanic.cloudnet.api.CloudAPI;
+import de.dytanic.cloudnet.bridge.CloudServer;
 import de.dytanic.cloudnet.lib.player.CloudPlayer;
 import de.dytanic.cloudnet.lib.player.permission.PermissionEntity;
 import de.luuuuuis.privateserver.spigot.PrivateServer;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+@Getter
 public class Owner {
 
     private final UUID uuid;
+    @Setter
     private Player player;
 
     public Owner() {
-        this.uuid = CloudAPI.getInstance().getServerInfo(CloudAPI.getInstance().getServerId()).getServerConfig().getProperties().getObject("uniqueId", UUID.class);
+        this.uuid = CloudServer.getInstance().getServerConfig().getProperties().getObject("uniqueId", UUID.class);
     }
 
     /**
@@ -38,17 +43,5 @@ public class Owner {
             PermissionEntity permissionEntity = cloudPlayer.getPermissionEntity();
             cloudPlayer.setPermissionEntity(new Permission(uuid, permissionEntity.getPermissions(), permissionEntity.getPrefix(), permissionEntity.getSuffix(), permissionEntity.getGroups()));
         }, 1);
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public UUID getUuid() {
-        return uuid;
     }
 }

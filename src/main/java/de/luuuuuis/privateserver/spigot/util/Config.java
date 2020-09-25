@@ -1,6 +1,7 @@
 package de.luuuuuis.privateserver.spigot.util;
 
 import de.luuuuuis.privateserver.spigot.PrivateServer;
+import lombok.Getter;
 
 import java.io.File;
 import java.io.FileReader;
@@ -13,15 +14,13 @@ import java.util.Objects;
 
 public class Config {
 
+    @Getter
     private static Config instance;
+    @Getter
     private final ArrayList<String> permissions;
 
     public Config(ArrayList<String> permissions) {
         this.permissions = permissions;
-    }
-
-    public static Config getInstance() {
-        return instance;
     }
 
     public synchronized static void init(File dataFolder) {
@@ -53,10 +52,6 @@ public class Config {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public ArrayList<String> getPermissions() {
-        return permissions;
     }
 
 }

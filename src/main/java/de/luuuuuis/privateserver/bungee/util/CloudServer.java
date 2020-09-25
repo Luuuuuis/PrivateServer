@@ -6,6 +6,8 @@ import de.dytanic.cloudnet.lib.server.ServerGroupMode;
 import de.dytanic.cloudnet.lib.server.template.Template;
 import de.dytanic.cloudnet.lib.server.template.TemplateResource;
 import de.dytanic.cloudnet.lib.utility.document.Document;
+import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -13,12 +15,14 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Getter
 public class CloudServer {
 
     private final static List<CloudServer> cloudServers = new ArrayList<>();
     private final String group;
     private final Owner owner;
     private final ServerGroupMode groupMode;
+    @Setter
     private String template = Config.getInstance().getTemplate();
     private String name;
 
@@ -44,7 +48,7 @@ public class CloudServer {
 
 
         CloudAPI.getInstance().startGameServer(CloudAPI.getInstance().getServerGroupData(group),
-                new ServerConfig(true, "null", new Document("uniqueId", owner.getUniqueId()), System.currentTimeMillis()),
+                new ServerConfig(true, "null", new Document("uniqueId", owner.getPlayer().getUniqueId()), System.currentTimeMillis()),
                 Config.getInstance().getMemory(),
                 new String[0],
                 new Template(template, TemplateResource.LOCAL, null, new String[0], Collections.emptyList()),
@@ -110,6 +114,12 @@ public class CloudServer {
             return false;
         }
 
+        // check if user has permission to start this group
+        if (!owner.getPlayer().hasPermission("privateserver.start." + group)) {
+            owner.sendMessage(Config.getInstance().getPrefix() + "You are not allowed to start this group.");
+            return false;
+        }
+
         return true;
     }
 
@@ -124,9 +134,6 @@ public class CloudServer {
         return name;
     }
 
-    public void setTemplate(String template) {
-        this.template = template;
-    }
 
     public List<String> getPlayers() {
         return CloudAPI.getInstance().getServerInfo(name).getPlayers();
@@ -136,26 +143,11 @@ public class CloudServer {
         return CloudAPI.getInstance().getServerInfo(name).getMaxPlayers();
     }
 
-    public String getName() {
-        return name;
-    }
 
     public void setName(int ID) {
         if (cloudServers.stream().noneMatch(server -> server.getName().equals(server.getOwner().getPlayer().getName() + "-" + ID))) {
             this.name = owner.getPlayer().getName() + "-" + ID;
         }
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public ServerGroupMode getGroupMode() {
-        return groupMode;
-    }
-
-    public Owner getOwner() {
-        return owner;
     }
 
 
