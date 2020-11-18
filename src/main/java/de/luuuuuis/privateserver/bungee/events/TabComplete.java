@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class TabComplete implements Listener {
 
-    String regex = "^/(pv|privateserver)\\s(start|stop|join)\\s";
+    String regex = "^/(pv|privateserver)\\s(start|stop|join)\\s$";
 
     @EventHandler
     public void onTabComplete(TabCompleteEvent e) {

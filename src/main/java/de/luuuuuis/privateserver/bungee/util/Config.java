@@ -2,6 +2,7 @@ package de.luuuuuis.privateserver.bungee.util;
 
 import de.luuuuuis.privateserver.bungee.PrivateServer;
 import lombok.Getter;
+import org.hjson.JsonValue;
 
 import java.io.File;
 import java.io.FileReader;
@@ -62,7 +63,7 @@ public class Config {
 
     private static void read(String path) {
         try (FileReader fileReader = new FileReader(path)) {
-            instance = PrivateServer.GSON.fromJson(fileReader, Config.class);
+            instance = PrivateServer.GSON.fromJson(JsonValue.readHjson(fileReader).toString(), Config.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

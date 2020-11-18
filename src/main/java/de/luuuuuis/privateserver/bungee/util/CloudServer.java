@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Getter
 public class CloudServer {
 
+    @Getter
     private final static List<CloudServer> cloudServers = new ArrayList<>();
     private final String group;
     private final Owner owner;
@@ -38,14 +39,9 @@ public class CloudServer {
         return cloudServers.stream().filter(cloudServer -> cloudServer.getName().equals(serverName)).findFirst().orElse(null);
     }
 
-    public static List<CloudServer> getCloudServers() {
-        return cloudServers;
-    }
-
     public void start() {
         if (!isAllowed())
             return;
-
 
         CloudAPI.getInstance().startGameServer(CloudAPI.getInstance().getServerGroupData(group),
                 new ServerConfig(true, "null", new Document("uniqueId", owner.getPlayer().getUniqueId()), System.currentTimeMillis()),
@@ -58,7 +54,6 @@ public class CloudServer {
                 new Properties(),
                 null,
                 Collections.emptyList());
-
 
         cloudServers.add(this);
         owner.getServers().add(this);
@@ -94,6 +89,13 @@ public class CloudServer {
 
     private boolean isAllowed() {
         List<String> groups = Config.getInstance().getGroups();
+
+        // check if user has permission to start this group
+        if (!owner.getPlayer().hasPermission("privateserver.start." + group)) {
+            owner.sendMessage(Config.getInstance().getPrefix() + "You are not allowed to start this group.");
+            return false;
+        }
+
         if (CloudAPI.getInstance().getServerGroupData(group) == null || !groups.contains(group)) {
             StringJoiner joiner = new StringJoiner(", ");
             groups.forEach(joiner::add);
@@ -111,12 +113,6 @@ public class CloudServer {
         int maxServersPerUser = (owner.getPlayer().hasPermission("privateserver.premium") ? Config.getInstance().getMaxServersPerUser() : 1);
         if (serverOfUser >= maxServersPerUser) {
             owner.sendMessage(Config.getInstance().getPrefix() + "§cYour server quota is exhausted! Stop a server before starting a new one.");
-            return false;
-        }
-
-        // check if user has permission to start this group
-        if (!owner.getPlayer().hasPermission("privateserver.start." + group)) {
-            owner.sendMessage(Config.getInstance().getPrefix() + "You are not allowed to start this group.");
             return false;
         }
 
@@ -143,12 +139,9 @@ public class CloudServer {
         return CloudAPI.getInstance().getServerInfo(name).getMaxPlayers();
     }
 
-
     public void setName(int ID) {
         if (cloudServers.stream().noneMatch(server -> server.getName().equals(server.getOwner().getPlayer().getName() + "-" + ID))) {
             this.name = owner.getPlayer().getName() + "-" + ID;
         }
     }
-
-
 }

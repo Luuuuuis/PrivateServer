@@ -7,7 +7,9 @@
     "noPerms": "§cYou got no permission to perform that action!"
   },
   "template": "default",
+  // default template, if no template is specified by player
   "groups": [
+    // All groups that should be available as private servers
     "Lobby",
     "BW-8x1",
     "SkyWars-4x2"
@@ -15,4 +17,5 @@
   "maxServersRunning": 10,
   "maxServersPerUser": 2,
   "memory": 256
+  // memory in MB for the private server instances
 }

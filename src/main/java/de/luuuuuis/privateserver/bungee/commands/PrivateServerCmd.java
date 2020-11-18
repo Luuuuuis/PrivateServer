@@ -15,7 +15,10 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PrivateServerCmd extends Command {
@@ -49,11 +52,8 @@ public class PrivateServerCmd extends Command {
 
         switch (strings[0].toLowerCase()) {
             case "start":
-                if (strings.length > 3 || strings[1] == null || strings[1].isEmpty()) {
-                    StringJoiner joiner = new StringJoiner(", ");
-                    Config.getInstance().getGroups().forEach(joiner::add);
-
-                    p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + String.format(Config.getInstance().getMessages().get("noGroupSpecified").toString(), joiner)));
+                if (strings.length > 3 || strings.length < 2) {
+                    p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + String.format(Config.getInstance().getMessages().get("noGroupSpecified").toString(), String.join(", ", Config.getInstance().getGroups()))));
                     return;
                 }
 
@@ -61,7 +61,6 @@ public class PrivateServerCmd extends Command {
                 if (owner == null) {
                     new Owner(p, playerExecutorBridge, cloudPlayer);
                 }
-
 
                 CloudServer cloudServer = new CloudServer(strings[1], p);
 
@@ -87,7 +86,7 @@ public class PrivateServerCmd extends Command {
                         Collection<Template> templates = CloudAPI.getInstance().getServerGroup(strings[1]).getTemplates();
 
                         if (templates.stream().anyMatch(template -> template.getName().equals(strings[2]))) {
-                            cloudServer.setTemplate(Objects.requireNonNull(templates.stream().filter(template -> template.getName().equals(strings[2])).findFirst().orElse(null)).getName());
+                            cloudServer.setTemplate(strings[2]);
                         } else {
                             String joinedTemplates = templates.stream().map(Template::getName).collect(Collectors.joining(", "));
                             p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "You may only start one of these templates: §a" + joinedTemplates));
@@ -121,14 +120,13 @@ public class PrivateServerCmd extends Command {
                 }
 
                 break;
-
             case "invite":
                 if (owner == null) {
                     p.sendMessage(TextComponent.fromLegacyText(Config.getInstance().getPrefix() + "§cYou have currently no servers running."));
                     return;
                 }
 
-                if (strings.length < 2 || strings[1] == null || strings[1].isEmpty()) {
+                if (strings.length < 2) {
                     owner.sendMessage(Config.getInstance().getPrefix() + "You have to address a player.");
                     return;
                 }

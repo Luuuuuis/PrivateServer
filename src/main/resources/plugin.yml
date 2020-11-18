@@ -2,8 +2,8 @@ name: PrivateServer
 version: "0.10"
 main: de.luuuuuis.privateserver.spigot.PrivateServer
 author: Luuuuuis
-depends:
-  - CloudNetAPI
+depends: [ CloudNetAPI ]
+softdepend: [ ViaVersion, ViaRewind, ViaBackwards ]
 description: Start private servers for CloudNet 2
 website: https://github.com/Luuuuuis/PrivateServer
 
